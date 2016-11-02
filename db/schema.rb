@@ -11,6 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+
+ActiveRecord::Schema.define(version: 20161101214539) do
+
+  create_table "records", force: :cascade do |t|
+    t.integer  "year"
+    t.string   "result"
+    t.float    "winningpercentage"
+    t.integer  "team_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "records", ["team_id"], name: "index_records_on_team_id"
+
+  create_table "recruiting_classes", force: :cascade do |t|
+    t.integer  "year"
+    t.integer  "rank"
+    t.integer  "five_stars"
+    t.integer  "four_stars"
+    t.integer  "three_stars"
+    t.integer  "team_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "recruiting_classes", ["team_id"], name: "index_recruiting_classes_on_team_id"
+
+  create_table "teams", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 end
