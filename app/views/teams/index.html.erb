@@ -1,0 +1,118 @@
+<ul>
+
+<% @teams = @teams.sort_by {|t| t.recruiting_classes[0].rank } %>
+
+<% @teams.each do |t| %>
+	<li><%= t.name %></li>
+	<li>2010 Class rank: <%= t.recruiting_classes[0].rank %></li>
+		<ul>
+			<% t.records.each do |rec| %>
+				<li><%= "#{rec.year}: #{rec.result}"  %></li>
+			<% end %>
+		</ul>
+<br>
+<% end %>
+
+</ul>
+
+
+
+
+
+
+
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 800px; max-width: 800px; margin: 0 auto"></div>
+
+
+
+
+<script>
+	
+$(function () {
+    Highcharts.chart('container', {
+        chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+        },
+        title: {
+            text: 'Wins from 2010-2014 by 2010 Recruiting Class'
+        },
+        subtitle: {
+            text: 'Louis Rowan Inc.'
+        },
+        xAxis: {
+            title: {
+                enabled: true,
+                text: 'Class Rank'
+            },
+            startOnTick: true,
+            endOnTick: true,
+            showLastLabel: true
+        },
+        yAxis: {
+            title: {
+                text: 'Wins'
+            }
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 5,
+                    states: {
+                        hover: {
+                            enabled: true,
+                            lineColor: 'rgb(100,100,100)'
+                        }
+                    }
+                },
+                states: {
+                    hover: {
+                        marker: {
+                            enabled: false
+                        }
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x} Rank, {point.y} Wins'
+                }
+            }
+        },
+
+
+        series: [
+
+<% randColor = ['blue', 'red', 'green', 'purple', 'black', 'lightblue', 'lightgreen'] %>
+<% @teams.each do |t| %>
+
+
+        {
+            name: '<%= t.name %>',
+            color: '<%= randColor.sample %>',
+            data: 
+
+            [ 
+
+            	[<%= t.recruiting_classes[0].rank.to_i %>, <%= t.records[0].result[0..1].to_i %> ],
+            	[<%= t.recruiting_classes[0].rank.to_i %>, <%= t.records[1].result[0..1].to_i %> ],
+            	[<%= t.recruiting_classes[0].rank.to_i %>, <%= t.records[2].result[0..1].to_i %> ],
+            	[<%= t.recruiting_classes[0].rank.to_i %>, <%= t.records[3].result[0..1].to_i %> ],
+            	[<%= t.recruiting_classes[0].rank.to_i %>, <%= t.records[4].result[0..1].to_i %> ],
+
+             ]
+
+        },
+
+        <% end %>
+
+        ]
+    });
+});
+
+
+
+</script>
